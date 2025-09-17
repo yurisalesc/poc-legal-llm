@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "poc-legal-llm",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}

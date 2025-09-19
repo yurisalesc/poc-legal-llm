@@ -10,6 +10,27 @@ celery_app = Celery("tasks", broker=CELERY_BROKER_URL, backend=CELERY_RESULT_BAC
 
 @celery_app.task
 def process_pdf_task(file_path: str):
+    """
+    Tarefa Celery para processamento assíncrono de arquivos PDF.
+
+    Esta tarefa:
+    1. Processa o arquivo PDF utilizando o serviço de processamento
+    2. Remove o arquivo temporário após processamento
+    3. Retorna resultado indicando sucesso ou falha
+
+    O processamento é feito de forma assíncrona para:
+    - Não bloquear a API durante uploads
+    - Permitir processamento em paralelo
+    - Gerenciar falhas de forma adequada
+
+    Args:
+        file_path (str): Caminho para o arquivo PDF temporário
+
+    Returns:
+        dict: Dicionário contendo:
+            - status: "Sucesso" ou "Erro"
+            - message: Mensagem descritiva do resultado
+    """
     try:
         process_pdf_and_store(file_path)
         os.remove(file_path)
